@@ -1,0 +1,30 @@
+{
+  "name": "bombsquad-filespec",
+  "version": "0.0.0",
+  "description": "parsers for bob/cob files",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "npm run build:bob",
+    "build:bob": "npm run build:bob:py && npm run build:bob:js",
+    "build:py": "npm run build:bob:py",
+    "build:js": "npm run build:bob:js",
+    "build:bob:py": "kaitai-struct-compiler -t python --outdir=output/python/ src/bob.ksy",
+    "build:bob:js": "kaitai-struct-compiler -t javascript --outdir=output/javascript/ src/bob.ksy"
+  },
+  "author": "aryan02420",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aryan02420/bombsquad-filespec.git"
+  },
+  "keywords": [
+    "bombsquad"
+  ],
+  "bugs": {
+    "url": "https://github.com/aryan02420/bombsquad-filespec/issues"
+  },
+  "homepage": "https://github.com/aryan02420/bombsquad-filespec#readme"
+}
