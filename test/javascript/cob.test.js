@@ -1,0 +1,12 @@
+const fs = require('fs')
+const BombsquadCob = require('../../output/javascript/BombsquadCob')
+const KaitaiStream = require('kaitai-struct/KaitaiStream')
+
+const fileContent = fs.readFileSync('../../models/cube.cob')
+const parsed = new BombsquadCob(new KaitaiStream(fileContent))
+console.log('vertices')
+parsed.data.vertices.forEach(vertex => console.log(vertex.pos))
+console.log('faces')
+parsed.data.faces.forEach(face => console.log(face.indices))
+console.log('normals')
+parsed.data.normals.forEach(normal => console.log(normal.dir))
