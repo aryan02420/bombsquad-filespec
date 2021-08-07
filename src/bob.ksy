@@ -6,19 +6,20 @@ meta:
 seq:
   - id: header
     type: header
-  - id: vertex_count
-    type: vertex_count
-  - id: face_count
-    type: face_count
-  - id: vertex_object
-    type: vertex_object
+  - id: mesh_info
+    type: mesh_info
+  - id: data
+    type: mesh_data
 
 types:
   header:
     seq:
       - id: magic
-        contents: [0x37,0xb2,0x00,0x00]
+        contents: [0x37, 0xb2, 0x00, 0x00]
         doc: BOB MAGIC 45623
+
+  mesh_info:
+    seq:
       - id: mesh_format
         type: u4
         enum: e_mesh_format
@@ -26,46 +27,49 @@ types:
           MeshFormat
           0 => MESH_FORMAT_UV16_N8_INDEX8
           1 => MESH_FORMAT_UV16_N8_INDEX16
-  vertex_count:
-    seq:
-      - id: count
+      - id: vertex_count
         type: u4
-  face_count:
-    seq:
-      - id: count
+      - id: face_count
         type: u4
-  vertex_position:
+
+  mesh_data:
     seq:
-      - id: x
-        type: f4
-      - id: y
-        type: f4
-      - id: z
-        type: f4
-  vertex_uv:
-    seq:
-      - id: x
-        type: u2
-      - id: y
-        type: u2
-  vertex_normal:
-    seq:
-      - id: x
-        type: s2
-      - id: y
-        type: s2
-      - id: z
-        type: s2
-  vertex_object:
+      - id: vertices
+        type: vertex
+        repeat: expr
+        repeat-expr: _root.mesh_info.vertex_count
+      - id: faces
+        type: face
+        repeat: expr
+        repeat-expr: _root.mesh_info.face_count
+
+  vertex:
     seq:
       - id: pos
-        type: vertex_position
+        type: f4
+        repeat: expr
+        repeat-expr: 3
       - id: uv
-        type: vertex_uv
+        type: u2
+        repeat: expr
+        repeat-expr: 2
       - id: norm
-        type: vertex_normal
+        type: s2
+        repeat: expr
+        repeat-expr: 3
       - id: padding
-        contents: [0x00,0x00]
+        contents: [0x00, 0x00]
+
+  face:
+    seq:
+      - id: indices
+        type:
+          switch-on: _root.mesh_info.mesh_format
+          cases:
+            e_mesh_format::index_8: s1
+            e_mesh_format::index_16: u2
+        repeat: expr
+        repeat-expr: 3
 
 enums:
   e_mesh_format:

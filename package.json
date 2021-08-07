@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/aryan02420/bombsquad-filespec/issues"
   },
-  "homepage": "https://github.com/aryan02420/bombsquad-filespec#readme"
+  "homepage": "https://github.com/aryan02420/bombsquad-filespec#readme",
+  "dependencies": {
+    "kaitai-struct": "^0.9.0"
+  }
 }

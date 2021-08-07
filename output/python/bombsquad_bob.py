@@ -22,11 +22,10 @@ class BombsquadBob(KaitaiStruct):
 
     def _read(self):
         self.header = BombsquadBob.Header(self._io, self, self._root)
-        self.vertex_count = BombsquadBob.VertexCount(self._io, self, self._root)
-        self.face_count = BombsquadBob.FaceCount(self._io, self, self._root)
-        self.vertex_object = BombsquadBob.VertexObject(self._io, self, self._root)
+        self.mesh_info = BombsquadBob.MeshInfo(self._io, self, self._root)
+        self.data = BombsquadBob.MeshData(self._io, self, self._root)
 
-    class VertexCount(KaitaiStruct):
+    class Vertex(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
@@ -34,26 +33,24 @@ class BombsquadBob(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.count = self._io.read_u4le()
+            self.pos = [None] * (3)
+            for i in range(3):
+                self.pos[i] = self._io.read_f4le()
 
+            self.uv = [None] * (2)
+            for i in range(2):
+                self.uv[i] = self._io.read_u2le()
 
-    class VertexObject(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
+            self.norm = [None] * (3)
+            for i in range(3):
+                self.norm[i] = self._io.read_s2le()
 
-        def _read(self):
-            self.pos = BombsquadBob.VertexPosition(self._io, self, self._root)
-            self.uv = BombsquadBob.VertexUv(self._io, self, self._root)
-            self.norm = BombsquadBob.VertexNormal(self._io, self, self._root)
             self.padding = self._io.read_bytes(2)
             if not self.padding == b"\x00\x00":
-                raise kaitaistruct.ValidationNotEqualError(b"\x00\x00", self.padding, self._io, u"/types/vertex_object/seq/3")
+                raise kaitaistruct.ValidationNotEqualError(b"\x00\x00", self.padding, self._io, u"/types/vertex/seq/3")
 
 
-    class VertexPosition(KaitaiStruct):
+    class Face(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
             self._io = _io
             self._parent = _parent
@@ -61,22 +58,14 @@ class BombsquadBob(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.x = self._io.read_f4le()
-            self.y = self._io.read_f4le()
-            self.z = self._io.read_f4le()
+            self.indices = [None] * (3)
+            for i in range(3):
+                _on = self._root.mesh_info.mesh_format
+                if _on == BombsquadBob.EMeshFormat.index_8:
+                    self.indices[i] = self._io.read_s1()
+                elif _on == BombsquadBob.EMeshFormat.index_16:
+                    self.indices[i] = self._io.read_u2le()
 
-
-    class VertexNormal(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.x = self._io.read_s2le()
-            self.y = self._io.read_s2le()
-            self.z = self._io.read_s2le()
 
 
     class Header(KaitaiStruct):
@@ -90,30 +79,37 @@ class BombsquadBob(KaitaiStruct):
             self.magic = self._io.read_bytes(4)
             if not self.magic == b"\x37\xB2\x00\x00":
                 raise kaitaistruct.ValidationNotEqualError(b"\x37\xB2\x00\x00", self.magic, self._io, u"/types/header/seq/0")
+
+
+    class MeshData(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
+            self.vertices = [None] * (self._root.mesh_info.vertex_count)
+            for i in range(self._root.mesh_info.vertex_count):
+                self.vertices[i] = BombsquadBob.Vertex(self._io, self, self._root)
+
+            self.faces = [None] * (self._root.mesh_info.face_count)
+            for i in range(self._root.mesh_info.face_count):
+                self.faces[i] = BombsquadBob.Face(self._io, self, self._root)
+
+
+
+    class MeshInfo(KaitaiStruct):
+        def __init__(self, _io, _parent=None, _root=None):
+            self._io = _io
+            self._parent = _parent
+            self._root = _root if _root else self
+            self._read()
+
+        def _read(self):
             self.mesh_format = KaitaiStream.resolve_enum(BombsquadBob.EMeshFormat, self._io.read_u4le())
-
-
-    class VertexUv(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.x = self._io.read_u2le()
-            self.y = self._io.read_u2le()
-
-
-    class FaceCount(KaitaiStruct):
-        def __init__(self, _io, _parent=None, _root=None):
-            self._io = _io
-            self._parent = _parent
-            self._root = _root if _root else self
-            self._read()
-
-        def _read(self):
-            self.count = self._io.read_u4le()
+            self.vertex_count = self._io.read_u4le()
+            self.face_count = self._io.read_u4le()
 
 
 
