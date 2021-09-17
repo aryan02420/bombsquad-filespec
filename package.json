@@ -12,10 +12,10 @@
     "build:cob": "npm run build:cob:py && npm run build:cob:js",
     "build:py": "npm run build:bob:py && npm run build:cob:py",
     "build:js": "npm run build:bob:js && npm run build:cob:js",
-    "build:bob:py": "kaitai-struct-compiler -t python --outdir=output/python/ src/bob.ksy",
-    "build:bob:js": "kaitai-struct-compiler -t javascript --outdir=output/javascript/ src/bob.ksy",
-    "build:cob:py": "kaitai-struct-compiler -t python --outdir=output/python/ src/cob.ksy",
-    "build:cob:js": "kaitai-struct-compiler -t javascript --outdir=output/javascript/ src/cob.ksy"
+    "build:bob:py": "kaitai-struct-compiler -t python --outdir=python/importer/ src/bob.ksy",
+    "build:bob:js": "kaitai-struct-compiler -t javascript --outdir=javascript/importer/ src/bob.ksy",
+    "build:cob:py": "kaitai-struct-compiler -t python --outdir=python/importer/ src/cob.ksy",
+    "build:cob:js": "kaitai-struct-compiler -t javascript --outdir=javascript/importer/ src/cob.ksy"
   },
   "author": "aryan02420",
   "license": "MIT",

@@ -1,8 +1,9 @@
 const fs = require('fs')
-const BombsquadCob = require('../../output/javascript/BombsquadCob')
+const path = require('path')
+const BombsquadCob = require('./../importer/BombsquadCob')
 const KaitaiStream = require('kaitai-struct/KaitaiStream')
 
-const fileContent = fs.readFileSync('../../models/cube.cob')
+const fileContent = fs.readFileSync(path.join(__dirname, './../../models/cube.cob'))
 const parsed = new BombsquadCob(new KaitaiStream(fileContent))
 console.log('vertices')
 parsed.data.vertices.forEach(vertex => console.log(vertex.pos))
