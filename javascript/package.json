@@ -1,0 +1,31 @@
+{
+  "name": "bombsquad-js",
+  "version": "0.2.0",
+  "description": "parsers for bob/cob files",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aryan02420",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bombsquad02420/bombsquad-filespec.git"
+  },
+  "keywords": [
+    "bombsquad",
+    "ballistica",
+    "bob",
+    "cob"
+  ],
+  "bugs": {
+    "url": "https://github.com/bombsquad02420/bombsquad-filespec/issues"
+  },
+  "homepage": "https://github.com/bombsquad02420/bombsquad-filespec#readme",
+  "dependencies": {
+    "kaitai-struct": "^0.9.0"
+  }
+}
