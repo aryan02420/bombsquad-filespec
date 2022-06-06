@@ -8,7 +8,7 @@ seq:
     type: header
   - id: mesh_info
     type: mesh_info
-  - id: data
+  - id: mesh_data
     type: mesh_data
 
 types:
@@ -16,7 +16,7 @@ types:
     seq:
       - id: magic
         contents: [0x9a, 0x34, 0x00, 0x00]
-        doc: COB MAGIC 13466
+        doc: COB MAGIC 13466
 
   mesh_info:
     seq:

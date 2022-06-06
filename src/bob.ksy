@@ -8,7 +8,7 @@ seq:
     type: header
   - id: mesh_info
     type: mesh_info
-  - id: data
+  - id: mesh_data
     type: mesh_data
 
 types:
@@ -16,7 +16,7 @@ types:
     seq:
       - id: magic
         contents: [0x37, 0xb2, 0x00, 0x00]
-        doc: BOB MAGIC 45623
+        doc: BOB MAGIC 45623
 
   mesh_info:
     seq:
@@ -27,6 +27,7 @@ types:
           MeshFormat
           0 => MESH_FORMAT_UV16_N8_INDEX8
           1 => MESH_FORMAT_UV16_N8_INDEX16
+          2 => MESH_FORMAT_UV16_N8_INDEX32
       - id: vertex_count
         type: u4
       - id: face_count
@@ -66,8 +67,9 @@ types:
         type:
           switch-on: _root.mesh_info.mesh_format
           cases:
-            e_mesh_format::index_8: s1
+            e_mesh_format::index_8: u1
             e_mesh_format::index_16: u2
+            e_mesh_format::index_32: u4
         repeat: expr
         repeat-expr: 3
 
@@ -75,3 +77,4 @@ enums:
   e_mesh_format:
     0: index_8
     1: index_16
+    2: index_32
