@@ -1,13 +1,13 @@
-const fs = require('fs')
-const path = require('path')
-const BombsquadCob = require('./../importer/BombsquadCob')
-const KaitaiStream = require('kaitai-struct/KaitaiStream')
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { URL } from 'node:url'
+import { CobReader } from './../src/index.js'
+import KaitaiStream from 'kaitai-struct/KaitaiStream.js'
 
-const fileContent = fs.readFileSync(path.join(__dirname, './../../models/cube.cob'))
-const parsed = new BombsquadCob(new KaitaiStream(fileContent))
-console.log('vertices')
-parsed.data.vertices.forEach(vertex => console.log(vertex.pos))
-console.log('faces')
-parsed.data.faces.forEach(face => console.log(face.indices))
-console.log('normals')
-parsed.data.normals.forEach(normal => console.log(normal.dir))
+const __dirname = new URL('.', import.meta.url).pathname
+
+const fileContent = readFileSync(join(__dirname, './../../models/cube.cob'))
+
+const cob = CobReader(new KaitaiStream(fileContent))
+
+console.log(cob)

@@ -1,8 +1,9 @@
 {
-  "name": "bombsquad-js",
-  "version": "0.2.0",
-  "description": "parsers for bob/cob files",
+  "name": "bombsquad-io",
+  "version": "0.3.0",
+  "description": "I/O for bob/cob files",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "test": "test"
   },
