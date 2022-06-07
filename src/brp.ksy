@@ -12,5 +12,5 @@ types:
     seq:
       - id: magic
         contents: [0x25, 0x47, 0x01, 0x00]
-        doc: BRP MAGIC 83749
+        doc: BRP MAGIC 83749
 

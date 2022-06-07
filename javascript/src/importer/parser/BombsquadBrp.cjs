@@ -37,7 +37,7 @@ var BombsquadBrp = (function() {
     }
 
     /**
-     * BRP MAGIC 83749
+     * BRP MAGIC 83749
      */
 
     return Header;
